@@ -32,6 +32,14 @@ type Tags struct {
 	active atomic.Value[Tag]
 }
 
+// NewTags creates a new list of tags with the tags provided. The active tag is set to the active tag provided.
+func NewTags(tags []Tag, active Tag) *Tags {
+	return &Tags{
+		tags:   tags,
+		active: *atomic.NewValue(active),
+	}
+}
+
 // Active returns the active tag of the list of tags.
 func (t *Tags) Active() (Tag, bool) {
 	tag := t.active.Load()
