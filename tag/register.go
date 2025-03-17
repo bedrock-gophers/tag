@@ -67,7 +67,11 @@ type tagData struct {
 // loadTag loads a tag from a file.
 func loadTag(filePath string) (Tag, error) {
 	var data tagData
-	err := gophig.GetConfComplex(filePath, gophig.JSONMarshaler{}, &data)
+	data, err := gophig.LoadConf[tagData](filePath, gophig.JSONMarshaler{})
+	if err != nil {
+		return Tag{}, errors.New(fmt.Sprintf("error loading tag at %s: %v", filePath, err))
+	}
+	
 	if err != nil {
 		return Tag{}, err
 	}
